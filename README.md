@@ -29,6 +29,9 @@ ChurnShield predicts whether a telecom customer is likely to churn (cancel their
 ```
 Raw Data → EDA → Feature Engineering → Model Training → FastAPI → Streamlit → HuggingFace
 ```
+
+
+```
 churnshield/
     ├── data/
     │   ├── raw/                    # Original dataset
