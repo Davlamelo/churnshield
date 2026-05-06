@@ -139,7 +139,7 @@ docker compose up --build
 
 ## 👤 Author
 
-**David TASS**
+**Ulrich David TASSEMBEDO**
 - GitHub: [@Davlamelo](https://github.com/Davlamelo)
 - HuggingFace: [@Davlamelo](https://huggingface.co/Davlamelo)
 
