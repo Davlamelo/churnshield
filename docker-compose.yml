@@ -1,0 +1,34 @@
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: churnshield-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+    networks:
+      - churnshield-network
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: churnshield-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    networks:
+      - churnshield-network
+    restart: unless-stopped
+
+networks:
+  churnshield-network:
+    driver: bridge

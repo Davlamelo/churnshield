@@ -1,5 +1,8 @@
 import streamlit as st
 import requests
+import os
+
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 # --- Page config ---
 st.set_page_config(
@@ -128,7 +131,7 @@ with col2:
 
         try:
             response = requests.post(
-                "http://127.0.0.1:8000/predict",
+                f"{API_URL}/predict",
                 json=payload,
                 timeout=5
             )
