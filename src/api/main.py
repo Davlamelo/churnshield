@@ -30,9 +30,13 @@ with open("models/feature_names.pkl", "rb") as f:
 
 
 def preprocess_input(customer: CustomerFeatures) -> pd.DataFrame:
-    """Transform raw input into model-ready features."""
 
-    # Encodings matching feature engineering step
+    # Scaling constants from training
+    tenure_mean, tenure_std         = 32.42, 24.54
+    monthly_mean, monthly_std       = 64.80, 30.09
+    engagement_mean, engagement_std = 1.83, 1.57
+    cpt_mean, cpt_std               = 5.71, 8.32
+
     contract_map = {"Month-to-month": 0, "One year": 1, "Two year": 2}
     payment_map = {
         "Electronic check": 0, "Mailed check": 1,
@@ -49,11 +53,12 @@ def preprocess_input(customer: CustomerFeatures) -> pd.DataFrame:
         "Contract": contract_map[customer.Contract],
         "PaymentMethod": payment_map[customer.PaymentMethod],
         "HasFamily": customer.HasFamily,
-        "EngagementScore": customer.EngagementScore,
-        "ChargePerTenure": customer.ChargePerTenure,
+        "EngagementScore": round(
+            (customer.EngagementScore - engagement_mean) / engagement_std, 4),
+        "ChargePerTenure": round(
+            (customer.ChargePerTenure - cpt_mean) / cpt_std, 4),
     }
 
-    # One-hot encoding for categorical features
     ohe_fields = {
         "InternetService": ["Fiber optic", "No"],
         "MultipleLines": ["No phone service", "Yes"],
@@ -72,8 +77,6 @@ def preprocess_input(customer: CustomerFeatures) -> pd.DataFrame:
             base[col_name] = 1 if value == cat else 0
 
     df = pd.DataFrame([base])
-
-    # Align columns with training features
     df = df.reindex(columns=feature_names, fill_value=0)
 
     return df

@@ -30,8 +30,8 @@ class CustomerFeatures(BaseModel):
     StreamingTV: Literal["Yes", "No", "No internet service"]
     StreamingMovies: Literal["Yes", "No", "No internet service"]
     HasFamily: int = Field(..., ge=0, le=1)
-    EngagementScore: int = Field(..., ge=0, le=6)
-    ChargePerTenure: float = Field(..., gt=0)
+    EngagementScore: float = Field(..., description="Engagement score (raw or scaled)")
+    ChargePerTenure: float = Field(..., description="Charge per tenure ratio")
 
 
 class PredictionResponse(BaseModel):
